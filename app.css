@@ -1,0 +1,143 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+:root{
+    --tube-height: 200px;
+}
+
+
+body{
+display: flex;
+flex-direction: column;
+gap: 1em;
+height: 100vh;
+align-items: center;
+justify-content: center;
+padding: 1.5em;
+position: relative;
+font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+background: linear-gradient(90deg, #2f3944, #414d5a);
+color: #fff;
+}
+
+.title{
+font-size: 4rem;
+margin-bottom: 1em;
+text-transform: uppercase;
+color: lightcyan;
+text-shadow: 3px 3px 0 rgb(24, 87, 87);
+}
+
+.overlay{
+width: 100%;
+height: 100%;
+background: rgba(0,0,0,0.85);
+position: absolute;
+z-index: 1000;
+display: none;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+gap: 2em;
+
+}
+
+.overlay .result{
+font-size: 3.5rem;
+letter-spacing: 2px;
+}
+
+
+.overlay .play-btn{
+padding: 0.75em 2em;
+font-size: 1.3rem;  
+font-weight: bold;
+text-transform: uppercase;
+cursor: pointer;
+background: transparent;
+border: 2px solid #fff;
+color: #fff;
+}
+
+.overlay .play-btn:hover{
+color: #000;
+background: #fff;
+}
+
+main{
+display: flex;
+align-items: center;
+justify-content: center;
+flex-wrap: wrap;
+gap: 1em;
+}
+
+.tube{
+
+width: 75px;
+height: var(--tube-height);
+border: 2px solid rgba(255,255,255,0.6);
+text-align: center;
+border-top: none;
+user-select: none;
+cursor: pointer;
+border-bottom-left-radius: 999px;
+border-bottom-right-radius:  999px;
+transition: all 0.5s ease;
+overflow: hidden;
+display: flex;
+flex-direction: column;
+justify-content: flex-end;
+position: relative;
+
+}
+
+.tube::before{
+position: absolute;
+width: 100%;
+height: 100%;
+content: '';
+box-shadow: inset 0px 0px 21px 2px rgba(0, 0, 0, 0.35);
+z-index: 1;
+}
+
+.tube::after{
+position: absolute;
+width: 100%;
+height: 100%;
+content: '';
+background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4)  35%, rgba(255,255,255,0.4)40%, rgba(255,255,255,0.1) 65%, rgba(255,255,255,0) 100%);
+z-index: 2;
+}
+
+.tube.active{
+transform: translateY(-50px);
+}
+
+
+
+.tube .color{
+width: 100%;
+display: block !important;
+height: calc(var(--tube-height) / 4);
+opacity: 0.75;
+position: relative;
+
+
+}
+
+.tube .cap{
+position: absolute;
+width: 100%;
+height: 8px;
+background: #737469;
+top:0;
+z-index: 3;
+box-shadow: inset 0px 0px 21px 2px rgba(0, 0, 0, 0.35);
+opacity: 0.5;
+}
