@@ -2,13 +2,11 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    
 }
 
 
 
-:root{
-    --tube-height: 200px;
-}
 
 
 body{
@@ -74,21 +72,27 @@ display: flex;
 align-items: center;
 justify-content: center;
 flex-wrap: wrap;
-gap: 1em;
+gap: 4em 1em;
 }
 
 .tube{
-
+--tube-height: 200px;
 width: 75px;
 height: var(--tube-height);
 border: 2px solid rgba(255,255,255,0.6);
 text-align: center;
 border-top: none;
-user-select: none;
+-webkit-user-select: none;  /* Chrome all / Safari all */
+-moz-user-select: none;     /* Firefox all */
+-ms-user-select: none;      /* IE 10+ */
+user-select: none;          /* Likely future */   
+-webkit-tap-highlight-color: transparent; /* Remove Highlight in mobile device*/
+-moz-tap-highlight-color: transparent; /* Remove Highlight in mobile device*/
+-ms-tap-highlight-color: transparent; /* Remove Highlight in mobile device*/
 cursor: pointer;
 border-bottom-left-radius: 999px;
 border-bottom-right-radius:  999px;
-transition: all 0.5s ease;
+transition: all 350ms ease;
 overflow: hidden;
 display: flex;
 flex-direction: column;
@@ -116,15 +120,16 @@ z-index: 2;
 }
 
 .tube.active{
-transform: translateY(-50px);
+transform: translateY(-30px);
 }
 
 
 
 .tube .color{
+--color-split: 4;
 width: 100%;
 display: block !important;
-height: calc(var(--tube-height) / 4);
+height: calc(var(--tube-height) / var(--color-split));
 opacity: 0.75;
 position: relative;
 
@@ -140,4 +145,18 @@ top:0;
 z-index: 3;
 box-shadow: inset 0px 0px 21px 2px rgba(0, 0, 0, 0.35);
 opacity: 0.5;
+}
+
+@media only screen and  (max-width: 650px) {
+    html{
+        font-size: 14px;
+    }
+
+    .tube{
+        width: 60px;
+    }
+
+    :root{
+        --tube-height: 170px;
+    }
 }
