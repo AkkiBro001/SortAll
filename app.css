@@ -76,10 +76,10 @@ gap: 4em 1em;
 }
 
 .tube{
---tube-height: 200px;
+--tube-height: 300px;
 width: 75px;
 height: var(--tube-height);
-border: 2px solid rgba(255,255,255,0.6);
+border: 2px solid rgba(255,255,255,0.1);
 text-align: center;
 border-top: none;
 -webkit-user-select: none;  /* Chrome all / Safari all */
@@ -154,9 +154,8 @@ opacity: 0.5;
 
     .tube{
         width: 60px;
+        --tube-height: 200px;
     }
 
-    :root{
-        --tube-height: 170px;
-    }
+   
 }
