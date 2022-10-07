@@ -1,55 +1,56 @@
 let COLORS_SPLIT = 4;
-  const NUM_EMPTY_TUBE = 2;
-  let initialColor = [
-    { color: "red", count: COLORS_SPLIT },
-    { color: "green", count: COLORS_SPLIT },
-    { color: "blue", count: COLORS_SPLIT },
-    { color: "cyan", count: COLORS_SPLIT },
-    { color: "orange", count: COLORS_SPLIT },
-    
-  ];
-  const level = document.querySelector('#level')
-  level.addEventListener('change', updateLevel)
+const NUM_EMPTY_TUBE = 2;
+let initialColor = [
+  { color: "red", count: COLORS_SPLIT },
+  { color: "green", count: COLORS_SPLIT },
+  { color: "blue", count: COLORS_SPLIT },
+  { color: "cyan", count: COLORS_SPLIT },
+  { color: "orange", count: COLORS_SPLIT },
 
-  function updateLevel(){
-    
-    
-     const additionalColors = [{ color: "yellow", count: COLORS_SPLIT }, { color: "lime", count: COLORS_SPLIT }, { color: "purple", count: COLORS_SPLIT }]
-     if(level.value === "1"){
-        return loadGame(COLORS_SPLIT, NUM_EMPTY_TUBE, JSON.parse(JSON.stringify(initialColor)))
-     }else if(level.value === "2"){
-      
-      return loadGame(COLORS_SPLIT, NUM_EMPTY_TUBE, [...JSON.parse(JSON.stringify(initialColor)), additionalColors[0]])
-     }else{
-      
-      return loadGame(COLORS_SPLIT, NUM_EMPTY_TUBE, [...JSON.parse(JSON.stringify(initialColor)), ...JSON.parse(JSON.stringify(additionalColors))])
-     }
-     
+];
+const level = document.querySelector('#level')
+level.addEventListener('change', updateLevel)
+
+function updateLevel() {
+
+
+  const additionalColors = [{ color: "yellow", count: COLORS_SPLIT }, { color: "lime", count: COLORS_SPLIT }, { color: "purple", count: COLORS_SPLIT }]
+  if (level.value === "1") {
+    return loadGame(COLORS_SPLIT, NUM_EMPTY_TUBE, JSON.parse(JSON.stringify(initialColor)))
+  } else if (level.value === "2") {
+
+    return loadGame(COLORS_SPLIT, NUM_EMPTY_TUBE, [...JSON.parse(JSON.stringify(initialColor)), additionalColors[0]])
+  } else {
+
+    return loadGame(COLORS_SPLIT, NUM_EMPTY_TUBE, [...JSON.parse(JSON.stringify(initialColor)), ...JSON.parse(JSON.stringify(additionalColors))])
   }
+
+}
 
 
 
 function loadGame(colorSplit, noOfEmptyTube, colorsArr) {
+  let defaultContainer = "";
   let colors = [...JSON.parse(JSON.stringify(colorsArr))];
-  
-  console.log(JSON.parse(JSON.stringify(colors)))
+
+
   let container
   const restart = document.querySelector('.restart')
   restart.addEventListener('click', restartGame);
-  
+
 
   function restartGame() {
     restart.removeEventListener('click', restartGame);
-    if (window.sessionStorage.getItem('container')) {
-      container = JSON.parse(window.sessionStorage.getItem('container'))
+    if (defaultContainer) {
+      container = JSON.parse(defaultContainer)
       loadInitialTubs()
       renderDOM()
     }
     restart.addEventListener('click', restartGame);
   }
 
-  function tubeInitSetup () {
-    
+  function tubeInitSetup() {
+
     const CREATE_EMPTY_TUBE = (noOfEmptyTube) => {
       let arr = [];
       for (i = 0; i < noOfEmptyTube; i++) {
@@ -57,16 +58,16 @@ function loadGame(colorSplit, noOfEmptyTube, colorsArr) {
       }
       return arr;
     };
-  
-    
+
+
     container = [
-        ...colors.map((_) => []),
-        ...CREATE_EMPTY_TUBE(noOfEmptyTube),
+      ...colors.map((_) => []),
+      ...CREATE_EMPTY_TUBE(noOfEmptyTube),
     ];
-    
+
   }
-  
- 
+
+
   const playAgain = document.querySelector(".play-btn");
 
   playAgain.addEventListener("click", () => {
@@ -78,28 +79,28 @@ function loadGame(colorSplit, noOfEmptyTube, colorsArr) {
 
 
   function loadInitialTubs() {
-    
-    
-    
-    
+
+
+
+
     while (colors.length > 0) {
       for (let tube = 0; tube < container.length - noOfEmptyTube; tube++) {
         if (container[tube].length < colorSplit) {
           const clrIndex = Math.round(Math.random() * (colors.length - 1));
 
           container[tube].push(colors[clrIndex].color);
-          
+
           colors[clrIndex].count--;
           if (colors[clrIndex].count <= 0) {
             colors.splice(clrIndex, 1);
           }
-          
-          }
+
+        }
       }
     }
 
-    
-    window.sessionStorage.setItem("container", JSON.stringify(container))
+
+    defaultContainer = JSON.stringify(container);
 
   }
 
@@ -193,7 +194,7 @@ function loadGame(colorSplit, noOfEmptyTube, colorsArr) {
     }
   }
 
-  
+
 
   function checkColors() {
     let timer;
@@ -231,11 +232,11 @@ function loadGame(colorSplit, noOfEmptyTube, colorsArr) {
 
 }
 
-try{
+try {
 
   updateLevel()
-}catch(e){
-  alert(e)
+} catch (e) {
+  alert("Browser not support.\nPlease update your browser.")
 }
 
 
