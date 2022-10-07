@@ -30,7 +30,7 @@ let COLORS_SPLIT = 4;
 
 
 function loadGame(colorSplit, noOfEmptyTube, colorsArr) {
-  // let colors = [...JSON.parse(JSON.stringify(colorsArr))];
+  let colors = [...JSON.parse(JSON.stringify(colorsArr))];
   
   console.log(JSON.parse(JSON.stringify(colors)))
   let container
