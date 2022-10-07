@@ -30,23 +30,23 @@ let COLORS_SPLIT = 4;
 
 
 function loadGame(colorSplit, noOfEmptyTube, colorsArr) {
-  let colors = [...JSON.parse(JSON.stringify(colorsArr))];
+  // let colors = [...JSON.parse(JSON.stringify(colorsArr))];
   
   console.log(JSON.parse(JSON.stringify(colors)))
   let container
-  // const restart = document.querySelector('.restart')
-  // restart.addEventListener('click', restartGame);
+  const restart = document.querySelector('.restart')
+  restart.addEventListener('click', restartGame);
   
 
-  // function restartGame() {
-  //   restart.removeEventListener('click', restartGame);
-  //   if (window.sessionStorage.getItem('container')) {
-  //     container = JSON.parse(window.sessionStorage.getItem('container'))
-  //     loadInitialTubs()
-  //     renderDOM()
-  //   }
-  //   restart.addEventListener('click', restartGame);
-  // }
+  function restartGame() {
+    restart.removeEventListener('click', restartGame);
+    if (window.sessionStorage.getItem('container')) {
+      container = JSON.parse(window.sessionStorage.getItem('container'))
+      loadInitialTubs()
+      renderDOM()
+    }
+    restart.addEventListener('click', restartGame);
+  }
 
   function tubeInitSetup () {
     
@@ -99,7 +99,7 @@ function loadGame(colorSplit, noOfEmptyTube, colorsArr) {
     }
 
     
-    //window.sessionStorage.setItem("container", JSON.stringify(container))
+    window.sessionStorage.setItem("container", JSON.stringify(container))
 
   }
 
@@ -231,8 +231,12 @@ function loadGame(colorSplit, noOfEmptyTube, colorsArr) {
 
 }
 
+try{
 
-updateLevel()
+  updateLevel()
+}catch(e){
+  alert(e)
+}
 
 
 
