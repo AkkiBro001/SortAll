@@ -35,7 +35,7 @@ function loadGame(colorSplit, noOfEmptyTube, colorsArr) {
 
 
   let container
-  const restart = document.querySelector('.restart')
+  const restart = document.querySelector('#restart')
   restart.addEventListener('click', restartGame);
 
 
