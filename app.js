@@ -1,5 +1,6 @@
 let COLORS_SPLIT = 4;
 const NUM_EMPTY_TUBE = 2;
+const NUMBERS_OF_UNDO = 4;
 let initialColor = [
   { color: "red", count: COLORS_SPLIT },
   { color: "green", count: COLORS_SPLIT },
@@ -16,27 +17,38 @@ function updateLevel() {
 
   const additionalColors = [{ color: "yellow", count: COLORS_SPLIT }, { color: "lime", count: COLORS_SPLIT }, { color: "purple", count: COLORS_SPLIT }]
   if (level.value === "1") {
-    return loadGame(COLORS_SPLIT, NUM_EMPTY_TUBE, JSON.parse(JSON.stringify(initialColor)))
+    return loadGame(COLORS_SPLIT, NUM_EMPTY_TUBE, JSON.parse(JSON.stringify(initialColor)), NUMBERS_OF_UNDO)
   } else if (level.value === "2") {
 
-    return loadGame(COLORS_SPLIT, NUM_EMPTY_TUBE, [...JSON.parse(JSON.stringify(initialColor)), additionalColors[0]])
+    return loadGame(COLORS_SPLIT, NUM_EMPTY_TUBE, [...JSON.parse(JSON.stringify(initialColor)), additionalColors[0]], NUMBERS_OF_UNDO)
   } else {
 
-    return loadGame(COLORS_SPLIT, NUM_EMPTY_TUBE, [...JSON.parse(JSON.stringify(initialColor)), ...JSON.parse(JSON.stringify(additionalColors))])
+    return loadGame(COLORS_SPLIT, NUM_EMPTY_TUBE, [...JSON.parse(JSON.stringify(initialColor)), ...JSON.parse(JSON.stringify(additionalColors))], NUMBERS_OF_UNDO)
   }
 
 }
 
 
 
-function loadGame(colorSplit, noOfEmptyTube, colorsArr) {
+function loadGame(colorSplit, noOfEmptyTube, colorsArr, numbersOfUndo) {
   let defaultContainer = "";
+  let undoArr = [];
   let colors = [...JSON.parse(JSON.stringify(colorsArr))];
-
+  const lable = document.querySelector("#lable")
 
   let container
   const restart = document.querySelector('#restart')
   restart.addEventListener('click', restartGame);
+
+  function resetUndo(){
+    //Reset Undo
+    numbersOfUndo = NUMBERS_OF_UNDO;
+    lable.style.textContent = 0;
+    lable.style.display = "none"
+   
+      undoArr = [];
+   
+  }
 
 
   function restartGame() {
@@ -46,8 +58,12 @@ function loadGame(colorSplit, noOfEmptyTube, colorsArr) {
       loadInitialTubs()
       renderDOM()
     }
+    resetUndo()
+    
     restart.addEventListener('click', restartGame);
   }
+
+ 
 
   function tubeInitSetup() {
 
@@ -81,10 +97,10 @@ function loadGame(colorSplit, noOfEmptyTube, colorsArr) {
   function loadInitialTubs() {
 
 
-
-
     while (colors.length > 0) {
+
       for (let tube = 0; tube < container.length - noOfEmptyTube; tube++) {
+       
         if (container[tube].length < colorSplit) {
           const clrIndex = Math.round(Math.random() * (colors.length - 1));
 
@@ -96,7 +112,12 @@ function loadGame(colorSplit, noOfEmptyTube, colorsArr) {
           }
 
         }
+
+        
+
       }
+
+      
     }
 
 
@@ -135,8 +156,38 @@ function loadGame(colorSplit, noOfEmptyTube, colorsArr) {
     );
   }
 
+  function setUndo(){
+      
+
+      if(undoArr.length < numbersOfUndo) {
+        
+        undoArr.push(JSON.parse(JSON.stringify(container)))
+      }else if(undoArr.length === numbersOfUndo){
+        
+        undoArr.shift()
+        undoArr.push(JSON.parse(JSON.stringify(container)));
+      }
+
+      if(undoArr.length === numbersOfUndo){
+        lable.style.display = "flex";
+        lable.textContent = numbersOfUndo - 1
+      }
+      //console.log(JSON.stringify(undoArr).replace(/(]],)/g, ']]\n\n\n'), undoArr.length)
+  }
 
 
+  const undo = document.querySelector('#undo')
+  undo.addEventListener('click', handleUndo)
+  function handleUndo (){
+      
+      if(undoArr.length === 0 || undoArr.length === 1) return;
+      
+      undoArr.pop()
+      container = JSON.parse(JSON.stringify(undoArr[undoArr.length-1]));
+      renderDOM()
+      lable.textContent = undoArr.length - 1;
+      numbersOfUndo--;
+  }
 
 
   function handleTube(e) {
@@ -197,6 +248,7 @@ function loadGame(colorSplit, noOfEmptyTube, colorsArr) {
 
 
   function checkColors() {
+    setUndo()
     let timer;
     if (timer) {
       clearTimeout(timer);
@@ -229,7 +281,7 @@ function loadGame(colorSplit, noOfEmptyTube, colorsArr) {
   tubeInitSetup()
   loadInitialTubs()
   renderDOM()
-
+  resetUndo()
 }
 
 try {
