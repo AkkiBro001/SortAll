@@ -59,6 +59,23 @@ position: relative;
     content: 'Undo';
 }
 
+#undo.disable::before{
+    color: lightgray;
+}
+
+#undo{
+    background: url("./images/undo.svg");
+    background-size: cover;
+    background-position: 0%;
+}
+
+#undo.disable{
+    background-position: 100%;
+    cursor: default;
+}
+
+
+
 #restart::before{
     content: 'Restart';
 }

@@ -35,19 +35,19 @@ function loadGame(colorSplit, noOfEmptyTube, colorsArr, numbersOfUndo) {
   let undoArr = [];
   let colors = [...JSON.parse(JSON.stringify(colorsArr))];
   const lable = document.querySelector("#lable")
-
+  const undo = document.querySelector('#undo')
   let container
   const restart = document.querySelector('#restart')
   restart.addEventListener('click', restartGame);
 
-  function resetUndo(){
+  function resetUndo() {
     //Reset Undo
     numbersOfUndo = NUMBERS_OF_UNDO;
     lable.style.textContent = 0;
     lable.style.display = "none"
-   
-      undoArr = [];
-   
+    undo.classList.add('disable')
+    undoArr = [];
+
   }
 
 
@@ -59,11 +59,11 @@ function loadGame(colorSplit, noOfEmptyTube, colorsArr, numbersOfUndo) {
       renderDOM()
     }
     resetUndo()
-    
+
     restart.addEventListener('click', restartGame);
   }
 
- 
+
 
   function tubeInitSetup() {
 
@@ -100,7 +100,7 @@ function loadGame(colorSplit, noOfEmptyTube, colorsArr, numbersOfUndo) {
     while (colors.length > 0) {
 
       for (let tube = 0; tube < container.length - noOfEmptyTube; tube++) {
-       
+
         if (container[tube].length < colorSplit) {
           const clrIndex = Math.round(Math.random() * (colors.length - 1));
 
@@ -113,11 +113,11 @@ function loadGame(colorSplit, noOfEmptyTube, colorsArr, numbersOfUndo) {
 
         }
 
-        
+
 
       }
 
-      
+
     }
 
 
@@ -156,37 +156,38 @@ function loadGame(colorSplit, noOfEmptyTube, colorsArr, numbersOfUndo) {
     );
   }
 
-  function setUndo(){
+  function setUndo() {
+
+
+    if (undoArr.length < numbersOfUndo) {
+
+      undoArr.push(JSON.parse(JSON.stringify(container)))
+    } else if (undoArr.length === numbersOfUndo) {
+
+      undoArr.shift()
+      undoArr.push(JSON.parse(JSON.stringify(container)));
+    }
+
+    if (undoArr.length === numbersOfUndo) {
       
-
-      if(undoArr.length < numbersOfUndo) {
-        
-        undoArr.push(JSON.parse(JSON.stringify(container)))
-      }else if(undoArr.length === numbersOfUndo){
-        
-        undoArr.shift()
-        undoArr.push(JSON.parse(JSON.stringify(container)));
-      }
-
-      if(undoArr.length === numbersOfUndo){
-        lable.style.display = "flex";
-        lable.textContent = numbersOfUndo - 1
-      }
-      //console.log(JSON.stringify(undoArr).replace(/(]],)/g, ']]\n\n\n'), undoArr.length)
+      lable.style.display = "flex";
+      lable.textContent = numbersOfUndo - 1
+      undo.classList.remove('disable')
+    }
   }
 
-
-  const undo = document.querySelector('#undo')
   undo.addEventListener('click', handleUndo)
-  function handleUndo (){
-      
-      if(undoArr.length === 0 || undoArr.length === 1) return;
-      
-      undoArr.pop()
-      container = JSON.parse(JSON.stringify(undoArr[undoArr.length-1]));
-      renderDOM()
-      lable.textContent = undoArr.length - 1;
-      numbersOfUndo--;
+  function handleUndo() {
+    
+    if (undoArr.length === 0 || undoArr.length === 1 || lable.style.display === "none") return;
+    undo.classList.remove('disable')
+    undoArr.pop()
+    container = JSON.parse(JSON.stringify(undoArr[undoArr.length - 1]));
+    renderDOM()
+    lable.textContent = undoArr.length - 1;
+    numbersOfUndo--;
+    
+    
   }
 
 
@@ -282,7 +283,16 @@ function loadGame(colorSplit, noOfEmptyTube, colorsArr, numbersOfUndo) {
   loadInitialTubs()
   renderDOM()
   resetUndo()
+
+
+  //console.log(JSON.stringify(undoArr).replace(/(]],)/g, ']]\n\n\n'), undoArr.length)
 }
+
+
+
+
+
+
 
 try {
 
