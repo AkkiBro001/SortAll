@@ -10,7 +10,19 @@ let initialColor = [
 
 ];
 const level = document.querySelector('#level')
+const option = document.querySelector('.options')
 level.addEventListener('change', updateLevel)
+window.addEventListener("scroll", scrollHnadler)
+
+function scrollHnadler () {
+  if(window.scrollY > 50){
+    option.style.backgroundColor = "#1f4788";
+  }else{
+    option.style.backgroundColor = "transparent";
+  }
+
+  
+}
 
 function updateLevel() {
 
